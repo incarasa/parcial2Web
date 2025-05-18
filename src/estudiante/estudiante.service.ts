@@ -3,12 +3,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EstudianteEntity } from './estudiante.entity';
 import { Repository } from 'typeorm';
-import { BusinessError, BusinessLogicException } from 'src/shared/errors/business-errors';
+import { BusinessError, BusinessLogicException } from '../shared/errors/business-errors';
 
 @Injectable()
 export class EstudianteService {
     constructor(
-       @InjectRepository(EstudianteService)
+       @InjectRepository(EstudianteEntity)
        private readonly estudianteRepository: Repository<EstudianteEntity>
    ){}
 
@@ -17,7 +17,7 @@ export class EstudianteService {
         const semestre = estudiante.semestre;
         const correo = estudiante.correo;
 
-        if (semestre > 0 && semestre < 10) {
+        if (semestre < 1 || semestre > 10) {
             throw new BusinessLogicException("El semestre debe estar entre 1 y 10", BusinessError.PRECONDITION_FAILED);
           }
 
@@ -35,6 +35,7 @@ export class EstudianteService {
   
        return estudiante;
    }
+
 
 
 
